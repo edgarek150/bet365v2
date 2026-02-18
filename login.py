@@ -20,13 +20,20 @@ async def login(page):
         text = await btn.inner_text()
         print(f"  aria-label={repr(label)} text={repr(text)}")
 
-    # Step 1: Click "Prihlásiť" to open the login modal
-    try:
-        await page.wait_for_selector("button:has-text('Prihlásiť')", timeout=10000)
-        await page.click("button:has-text('Prihlásiť')")
-        print("Clicked login button, waiting for modal...")
-    except Exception as e:
-        print(f"Login button not found: {e}")
+    # Step 1: Click the login button to open the modal (try each variant)
+    login_button_texts = ["Prihlásiť", "Přihlásit se", "Přihlásiť se", "Prihlásiť se"]
+    clicked = False
+    for text in login_button_texts:
+        try:
+            await page.wait_for_selector(f"button:has-text('{text}')", timeout=5000)
+            await page.click(f"button:has-text('{text}')")
+            print(f"Clicked login button ({repr(text)}), waiting for modal...")
+            clicked = True
+            break
+        except Exception:
+            continue
+    if not clicked:
+        print("Login button not found (tried all variants)")
         return False
 
     await asyncio.sleep(3)

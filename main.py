@@ -31,8 +31,11 @@ async def is_logged_in(page) -> bool:
 async def is_logged_out(page) -> bool:
     """Return True if the login button is visible — session has expired."""
     try:
-        btn = await page.query_selector("button:has-text('Prihlásiť')")
-        return btn is not None and await btn.is_visible()
+        for text in ["Prihlásiť", "Přihlásit se", "Přihlásiť se", "Prihlásiť se"]:
+            btn = await page.query_selector(f"button:has-text('{text}')")
+            if btn is not None and await btn.is_visible():
+                return True
+        return False
     except Exception:
         return False
 
