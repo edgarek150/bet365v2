@@ -1,5 +1,4 @@
 import asyncio
-import time
 
 USERNAME = "Grzavr"
 PASSWORD = "betuof"
@@ -84,7 +83,7 @@ async def login(page):
     else:
         print("No password input found")
 
-    time.sleep(30)
+    await asyncio.sleep(3)
 
     # Step 4: Click the LAST "Prihlásiť" button (submit inside modal)
     login_clicked = False
@@ -101,7 +100,7 @@ async def login(page):
         return False
 
     # Step 5: Handle email/DOB verification iframe (messageWindow)
-    await asyncio.sleep(5)
+    await asyncio.sleep(3)
     login_frame = page.frame(name="messageWindow")
     if login_frame:
         print("Found messageWindow iframe, filling verification form...")
@@ -119,15 +118,15 @@ async def login(page):
         email_field = await login_frame.query_selector("#email")
         if email_field:
             await email_field.fill(EMAIL)
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             await login_frame.select_option('select[aria-label="Deň"]', value=DOB_DAY)
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             await login_frame.select_option('select[aria-label="Mesiac"]', value=DOB_MONTH)
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             await login_frame.select_option('select[aria-label="Rok"]', value=DOB_YEAR)
-            await asyncio.sleep(2)
+            await asyncio.sleep(1)
             await login_frame.click("button:has-text('Prihlásiť sa')")
-            await asyncio.sleep(5)
+            await asyncio.sleep(3)
             print("Verification form submitted — LOGIN SUCCESSFUL")
         else:
             print("Email field not found in iframe")
