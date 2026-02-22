@@ -14,9 +14,18 @@ import config
 async def open_new_tab(context, old_page, url):
     """Open url in a fresh tab and close the old one. Returns the new page."""
     new_page = await context.new_page()
-    await new_page.goto(url, wait_until="domcontentloaded")
-    await old_page.close()
-    return new_page
+    try:
+        await new_page.goto(url, wait_until="domcontentloaded")
+        await old_page.close()
+        return new_page
+    except Exception as e:
+        # Navigation failed — close the orphan tab, old_page is still alive
+        print(f"open_new_tab failed for {url}: {e}")
+        try:
+            await new_page.close()
+        except Exception:
+            pass
+        raise
 
 
 async def is_logged_in(page) -> bool:
@@ -137,7 +146,11 @@ async def Loop_URL(context, page, current_link: Link, data):
         return page
 
     # Open event URL in a fresh tab, close the current (sport) tab
-    page = await open_new_tab(context, page, current_link.url)
+    try:
+        page = await open_new_tab(context, page, current_link.url)
+    except Exception as e:
+        print(f"Loop_URL: skipping {current_link.url} due to network error: {e}")
+        return page
     await look_odds(page, data, current_link)
 
     sleep_time = random.randint(app_state.SEARCH_SLEEP[0], app_state.SEARCH_SLEEP[1])
@@ -151,6 +164,9 @@ async def Main_Proccess(context, page, data):
     """Main scraping loop — finds new events and re-scrapes existing ones."""
     print("Main process started")
     while True:
+        # Always verify login before doing anything — odds are fake when logged out
+        page = await relogin_if_needed(context, page)
+
         tourn_texts, (event_texts, _) = await get_tourn_a_event(page)
 
         if not tourn_texts:
@@ -194,6 +210,7 @@ async def Searching_Squash(context, page, data):
     """Wait for squash tournaments to appear, then start main process."""
     print("Searching for squash tournaments...")
     while True:
+        page = await relogin_if_needed(context, page)
         tourn_texts, _ = await get_tourn_a_event(page)
         if tourn_texts:
             print(f"Found {len(tourn_texts)} tournaments, starting main process")
@@ -244,4 +261,10 @@ async def scrape():
         await Searching_Squash(context, page, data)
 
 
-asyncio.run(scrape())
+import time as _time
+while True:
+    try:
+        asyncio.run(scrape())
+    except Exception as e:
+        print(f"scrape() crashed: {e} — restarting in 15s...")
+        _time.sleep(15)
