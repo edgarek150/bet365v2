@@ -9,6 +9,19 @@ from scraper import get_tourn_a_event, look_odds, accept_cookies, create_new_pai
 from processing.event_processor import initialize_urls
 from utils.io import load_json_from_file
 import config
+import requests
+
+
+def _ping_admin(text: str):
+    try:
+        r = requests.get(
+            f"https://api.telegram.org/bot{config.TELEGRAM_BOT_TOKEN}/sendMessage",
+            params={"chat_id": config.ADMIN_CHAT_ID, "text": text},
+        )
+        if not r.ok:
+            print(f"Startup ping failed: {r.status_code} {r.text}")
+    except Exception as e:
+        print(f"Startup ping exception: {e}")
 
 
 async def open_new_tab(context, old_page, url):
@@ -248,6 +261,7 @@ async def scrape():
                     await asyncio.sleep(10)
 
         print("Login done — starting scraper")
+        _ping_admin("🤖 bet365 scraper started")
 
         # Load persisted data and initialise known URLs
         data = load_json_from_file(config.DATA_JSON) or []

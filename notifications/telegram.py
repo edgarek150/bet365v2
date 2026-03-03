@@ -20,7 +20,10 @@ def send_message(message: str, notify: bool) -> bool:
 
         # Odds updates always go to admin only (never to groups or tippers)
         params["chat_id"] = config.ADMIN_CHAT_ID
-        requests.get(config.SEND_TEXT_URL, params=params)
+        r = requests.get(config.SEND_TEXT_URL, params=params)
+        if not r.ok:
+            print(f"Telegram API error: {r.status_code} {r.text}")
+            log_error(f"Telegram API error: {r.status_code} {r.text}")
 
         return True
     except Exception as e:
