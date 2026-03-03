@@ -18,15 +18,9 @@ def send_message(message: str, notify: bool) -> bool:
         if not notify:
             params["disable_notification"] = True
 
-        if config.TEST_MODE:
-            # Test mode: only admin (edgar)
-            params["chat_id"] = config.ADMIN_CHAT_ID
-            requests.get(config.SEND_TEXT_URL, params=params)
-        elif config.MESSAGE_ON in (1, 2):
-            # Production with group: send to group, NOT to edgar
-            params["chat_id"] = config.TELEGRAM_GROUP_CHAT_ID
-            requests.get(config.FAST_TEXT_URL, params=params)
-        # MESSAGE_ON == 0 in production → no one receives odds updates
+        # Odds updates always go to admin only (never to groups or tippers)
+        params["chat_id"] = config.ADMIN_CHAT_ID
+        requests.get(config.SEND_TEXT_URL, params=params)
 
         return True
     except Exception as e:

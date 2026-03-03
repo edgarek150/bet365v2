@@ -126,13 +126,6 @@ def check_matches(old_matches: List[List[str]], event: Any) -> int:
                         has_new_matches = True
                         has_changes = True
                         newly_identified.append(match_obj)
-                        notifications = _match_single_pick_rules(match_obj, bet_rules_single, is_handicap_event)
-                        if notifications:
-                            save_bet_rules(bet_rules_single)
-                            for n in notifications:
-                                is_max = n['rule'].bet_value.upper() == "MAX"
-                                suffix = " (MAX)" if is_max else ""
-                                pick_lines.append(f"🎯 Pick → *{n['player_name']}* @ {n['odd']:.2f} – Value: {n['bet_value']}{suffix}\n")
                     else:
                         msg = add_to_message(match_obj, False)
                         if msg:
@@ -151,13 +144,14 @@ def check_matches(old_matches: List[List[str]], event: Any) -> int:
             play_notification_sound()
             newly_identified.append(match_obj)
 
-            notifications = _match_single_pick_rules(match_obj, bet_rules_single, is_handicap_event)
-            if notifications:
-                save_bet_rules(bet_rules_single)
-                for n in notifications:
-                    is_max = n['rule'].bet_value.upper() == "MAX"
-                    suffix = " (MAX)" if is_max else ""
-                    pick_lines.append(f"🎯 Pick → *{n['player_name']}* @ {n['odd']:.2f} – Value: {n['bet_value']}{suffix}\n")
+        # Run rules against every visible match (sent flag prevents re-firing)
+        notifications = _match_single_pick_rules(match_obj, bet_rules_single, is_handicap_event)
+        if notifications:
+            save_bet_rules(bet_rules_single)
+            for n in notifications:
+                is_max = n['rule'].bet_value.upper() == "MAX"
+                suffix = " (MAX)" if is_max else ""
+                pick_lines.append(f"🎯 Pick → *{n['player_name']}* @ {n['odd']:.2f} – Value: {n['bet_value']}{suffix}\n")
 
     # N-leg combi picks
     all_triggered_combis: List[Dict[str, Any]] = []
