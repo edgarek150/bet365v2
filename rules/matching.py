@@ -151,7 +151,11 @@ def check_matches(old_matches: List[List[str]], event: Any) -> int:
             for n in notifications:
                 is_max = n['rule'].bet_value.upper() == "MAX"
                 suffix = " (MAX)" if is_max else ""
-                pick_lines.append(f"🎯 Pick → *{n['player_name']}* @ {n['odd']:.2f} – Value: {n['bet_value']}{suffix}\n")
+                line = (
+                    f"🎯 Pick → *{n['player_name']}* @ {n['odd']:.2f}\n"
+                    f"  Good to take @ {n['threshold']:.2f} | Value: {n['bet_value']}{suffix}\n"
+                )
+                pick_lines.append(line)
 
     # N-leg combi picks
     all_triggered_combis: List[Dict[str, Any]] = []
@@ -173,7 +177,7 @@ def check_matches(old_matches: List[List[str]], event: Any) -> int:
                         if player_name is None:
                             all_matched = False
                             break
-                        legs_details.append({"player_name": player_name, "odd": actual_odd})
+                        legs_details.append({"player_name": player_name, "odd": actual_odd, "min_odd": combi_rule.legs[i].min_odd})
                         product *= actual_odd
 
                     if all_matched and product >= combi_rule.combined_threshold_odd:
@@ -206,7 +210,7 @@ def check_matches(old_matches: List[List[str]], event: Any) -> int:
             else:
                 line = f"🎯 *New COMBI Pick* — Value: {best['rule'].bet_value}\n"
             for leg in best['legs_info']:
-                line += f"  — *{leg['player_name']}* @ {leg['odd']:.2f}\n"
+                line += f"  — *{leg['player_name']}* @ {leg['odd']:.2f} (good to take @ {leg['min_odd']:.2f})\n"
             line += f"*Combined Odds:* {best['combined_odd']:.2f}\n"
             pick_lines.append(line)
 
