@@ -1,4 +1,6 @@
 import asyncio
+import requests
+import config
 
 USERNAME = "Grzavr"
 PASSWORD = "betuof"
@@ -135,6 +137,13 @@ async def login(page):
             await login_frame.click("button:has-text('Prihlásiť sa')")
             await asyncio.sleep(3)
             print("Verification form submitted — LOGIN SUCCESSFUL")
+            try:
+                requests.get(
+                    f"https://api.telegram.org/bot{config.TELEGRAM_BOT_TOKEN}/sendMessage",
+                    params={"chat_id": config.ADMIN_CHAT_ID, "text": "✅ bet365 login successful"},
+                )
+            except Exception:
+                pass
         else:
             print("No email field in messageWindow — verification not required, assuming login succeeded")
     else:
