@@ -29,7 +29,7 @@ TELEGRAM_GROUP_CHAT_ID = "-4775004560"
 # PostgreSQL tippers DB
 DB_HOST = "157.180.77.37"
 DB_PORT = 5432
-DB_NAME = "willstropa"
+DB_NAME = "squash_results"
 DB_USER = "edgar"
 DB_PASSWORD = "willstropa"
 
