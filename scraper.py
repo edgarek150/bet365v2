@@ -3,7 +3,7 @@ import re
 from typing import List, Tuple, Any, Dict, Optional
 
 import config
-from models import Match, TournamentEvent, Link
+from models import Match, TournamentEvent, Link, app_state
 from utils.logging import log_error
 
 
@@ -61,7 +61,7 @@ def create_new_pairs(name_of_tournaments: List[str], name_of_events: List[str]) 
     if not name_of_events:
         return []
 
-    lang = config.app_state.CURRENT_LANGUAGE
+    lang = app_state.CURRENT_LANGUAGE
     event_name_map = {}
     for ev in name_of_events:
         if ev == config.TRANSLATIONS['TO_WIN_MATCH'].get(lang, 'To Win Match'):
@@ -90,9 +90,9 @@ def create_new_pairs(name_of_tournaments: List[str], name_of_events: List[str]) 
 def compare_pairs(old_pairs: List[Tuple], new_pairs: List[Tuple]) -> List[Tuple]:
     old_set = set(old_pairs)
     new_set = set(new_pairs)
-    to_remove = [u for u in config.app_state.URLS if (u.tournament, u.event) in old_set - new_set]
+    to_remove = [u for u in app_state.URLS if (u.tournament, u.event) in old_set - new_set]
     for u in to_remove:
-        config.app_state.URLS.remove(u)
+        app_state.URLS.remove(u)
     return list(new_set - old_set)
 
 
@@ -186,7 +186,7 @@ async def get_tourn_a_event(page) -> Tuple[List[str], Tuple[List[str], List]]:
     Returns (tournament_texts, (event_texts, event_elements)).
     Filters TOTALS, normalises HANDICAPS/TO_WIN_MATCH translations.
     """
-    lang = config.app_state.CURRENT_LANGUAGE
+    lang = app_state.CURRENT_LANGUAGE
     tournaments, _ = await query_label(page, "sm-SplashMarketGroupButton_Text", 6)
     if not tournaments:
         return [], ([], [])
@@ -252,8 +252,8 @@ async def look_odds(page, data: List[Dict[str, Any]], link: Link) -> None:
                 live_el = await container.query_selector("div.pi-ScoreVariantInColumnsWithSets")
                 if live_el:
                     pair = frozenset({name1, name2})
-                    if pair not in config.app_state.PROCESSED_LIVE_MATCHES:
-                        config.app_state.PROCESSED_LIVE_MATCHES.add(pair)
+                    if pair not in app_state.PROCESSED_LIVE_MATCHES:
+                        app_state.PROCESSED_LIVE_MATCHES.add(pair)
                         live_match_count += 1
                         print(f"    🔴 LIVE: {name1} vs {name2}")
                     else:
@@ -316,7 +316,7 @@ async def look_odds(page, data: List[Dict[str, Any]], link: Link) -> None:
                 odds_for_creation = []
 
         # --- Build Match objects ---
-        live_snapshot = list(config.app_state.PROCESSED_LIVE_MATCHES)
+        live_snapshot = list(app_state.PROCESSED_LIVE_MATCHES)
         print(f"🎯 Creating matches: {len(players_for_creation)} players, {len(odds_for_creation)} odds, {len(all_times)} times")
 
         matches = create_matches(len(players_for_creation), players_for_creation, odds_for_creation, all_times, live_snapshot)
@@ -335,6 +335,6 @@ async def look_odds(page, data: List[Dict[str, Any]], link: Link) -> None:
     except Exception as e:
         log_error(f"look_odds error for {link.tournament} - {link.event}: {e}")
         # Remove broken link so we don't get stuck on it
-        to_remove = [u for u in config.app_state.URLS if u.tournament == link.tournament and u.event == link.event]
+        to_remove = [u for u in app_state.URLS if u.tournament == link.tournament and u.event == link.event]
         for u in to_remove:
-            config.app_state.URLS.remove(u)
+            app_state.URLS.remove(u)

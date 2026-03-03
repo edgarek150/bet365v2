@@ -1,7 +1,7 @@
 from typing import Any, List, Dict
 
 import config
-from models import TournamentEvent, Link
+from models import TournamentEvent, Link, app_state
 from utils.io import save_json_to_file
 from utils.logging import log_error
 
@@ -11,7 +11,7 @@ def initialize_urls(data):
     for tournament in data:
         for event in tournament.get('events', []):
             url = Link(tournament['name'], event['name'], event['url'], None)
-            config.app_state.URLS.append(url)
+            app_state.URLS.append(url)
 
 
 def get_data_filepath():
@@ -65,9 +65,9 @@ def odds_existence(event: TournamentEvent, data: List[Dict[str, Any]]) -> int:
         data.append(new_tournament)
         save_json_to_file(data, get_data_filepath())
 
-        if config.app_state.TIMER:
-            config.app_state.TIMER.cancel()
-            config.app_state.TIMER = None
+        if app_state.TIMER:
+            app_state.TIMER.cancel()
+            app_state.TIMER = None
         return 1
 
     return 0

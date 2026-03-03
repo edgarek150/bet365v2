@@ -5,6 +5,7 @@ import time
 from threading import Timer
 
 import config
+from models import app_state
 from utils.logging import log_error
 
 
@@ -19,16 +20,16 @@ def kill_session(send_message: bool = True):
 
 
 def set_timer_slow_in_hour():
-    if config.app_state.TIMER:
-        config.app_state.TIMER.cancel()
-        config.app_state.TIMER = None
-    config.app_state.TIMER = Timer(3600, set_search_sleep, [145, 180])
-    config.app_state.TIMER.start()
+    if app_state.TIMER:
+        app_state.TIMER.cancel()
+        app_state.TIMER = None
+    app_state.TIMER = Timer(3600, set_search_sleep, [145, 180])
+    app_state.TIMER.start()
 
 
 def set_search_sleep(a: int, b: int):
-    config.app_state.SEARCH_SLEEP[0] = a
-    config.app_state.SEARCH_SLEEP[1] = b
+    app_state.SEARCH_SLEEP[0] = a
+    app_state.SEARCH_SLEEP[1] = b
 
 
 def play_notification_sound():
