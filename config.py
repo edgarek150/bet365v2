@@ -27,7 +27,7 @@ TELEGRAM_CHAT_ID = ADMIN_CHAT_ID   # keep alias for backward compat
 TELEGRAM_GROUP_CHAT_ID = "-4775004560"
 
 # PostgreSQL tippers DB
-DB_HOST = "localhost"
+DB_HOST = "157.180.77.37"
 DB_PORT = 5432
 DB_NAME = "willstropa"
 DB_USER = "edgar"
