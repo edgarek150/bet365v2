@@ -1,5 +1,4 @@
 import os
-from models import app_state
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
@@ -8,6 +7,10 @@ LOG_DIR = os.path.join(BASE_DIR, 'logs')
 # False  = connect to existing Chrome via CDP (production — start Chrome manually first)
 # True   = let Playwright launch your system Chrome in headless mode
 HEADLESS = False
+
+# True  = all messages go only to your personal chat (edgar), groups are never notified
+# False = production, messages go to whoever is in TARGET_CHATS / MESSAGE_ON setting
+TEST_MODE = True
 import platform
 _system = platform.system()
 CHROME_EXECUTABLE = (
@@ -19,8 +22,16 @@ CHROME_EXECUTABLE = (
 )
 
 TELEGRAM_BOT_TOKEN = "8007135077:AAHD2NR7Y4fq2AnZBVnkkSmFKr7cHYDeIpA"
-TELEGRAM_CHAT_ID = "1817518795"
+ADMIN_CHAT_ID = "1817518795"        # edgar — admin/test only
+TELEGRAM_CHAT_ID = ADMIN_CHAT_ID   # keep alias for backward compat
 TELEGRAM_GROUP_CHAT_ID = "-4775004560"
+
+# PostgreSQL tippers DB
+DB_HOST = "localhost"
+DB_PORT = 5432
+DB_NAME = "willstropa"
+DB_USER = "edgar"
+DB_PASSWORD = "willstropa"
 
 SEND_TEXT_URL = "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage"
 SEND_TEXT_SILENT_URL = "https://api.telegram.org/bot" + TELEGRAM_BOT_TOKEN + "/sendMessage"

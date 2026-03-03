@@ -74,7 +74,7 @@ def load_combi_rules_N(path: str = None) -> List[CombiRule]:
                 combined_threshold_odd=parse_float_robust(get("combinedthresholdodd", "CombinedThresholdOdd"), 999.0),
                 bet_value=get("betvalue", "BetValue"),
                 sent=parse_int_robust(get("sent", "Sent"), 0),
-                _source_row_dict=dict(row)
+                _source_row_dict=dict(row),
             ))
         except Exception as e:
             log_error(f"Error parsing N-combi rule row {i+2}: {e}")
