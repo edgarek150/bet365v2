@@ -31,7 +31,7 @@ def send_message_all(text: str, notify: bool = True):
     for chat_id in chat_ids:
         params["chat_id"] = chat_id
         r = requests.get(
-            f"https://api.telegram.org/bot{config.TELEGRAM_BOT_TOKEN}/sendMessage",
+            f"https://api.telegram.org/bot{config.TELEGRAM_BOT_TOKEN_PICKS}/sendMessage",
             params=params,
         )
         if not r.ok:

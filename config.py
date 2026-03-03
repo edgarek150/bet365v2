@@ -10,7 +10,7 @@ HEADLESS = False
 
 # True  = all messages go only to your personal chat (edgar), groups are never notified
 # False = production, messages go to whoever is in TARGET_CHATS / MESSAGE_ON setting
-TEST_MODE = True
+TEST_MODE = False
 import platform
 _system = platform.system()
 CHROME_EXECUTABLE = (
@@ -21,7 +21,8 @@ CHROME_EXECUTABLE = (
     else "/usr/bin/google-chrome"
 )
 
-TELEGRAM_BOT_TOKEN = "8007135077:AAHD2NR7Y4fq2AnZBVnkkSmFKr7cHYDeIpA"
+TELEGRAM_BOT_TOKEN = "8007135077:AAHD2NR7Y4fq2AnZBVnkkSmFKr7cHYDeIpA"        # osel bot — admin/odds updates only
+TELEGRAM_BOT_TOKEN_PICKS = "2041501393:AAEP6X61G75QE_yWgSlyLsD_FprgmGB7g8c"  # picks bot — in all tipper groups
 ADMIN_CHAT_ID = "1817518795"        # edgar — admin/test only
 TELEGRAM_CHAT_ID = ADMIN_CHAT_ID   # keep alias for backward compat
 TELEGRAM_GROUP_CHAT_ID = "-4775004560"
