@@ -6,7 +6,7 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":9222"') do taskkill /PID %%
 timeout /t 2 /nobreak >nul
 
 :: Start Chrome with remote debugging (minimized)
-start /min "" "C:\Program Files\Google\Chrome\Application\chrome.exe" ^
+start /min "" "C:\Users\edgar\AppData\Local\Google\Chrome\Application\chrome.exe" ^
   --remote-debugging-port=9222 ^
   --no-first-run ^
   --no-default-browser-check ^
@@ -15,5 +15,3 @@ start /min "" "C:\Program Files\Google\Chrome\Application\chrome.exe" ^
 
 timeout /t 3 /nobreak >nul
 
-:: Start the scraper
-python main.py

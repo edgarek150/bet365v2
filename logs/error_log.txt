@@ -33,3 +33,4 @@
 [2026-02-18 11:23:25] ERROR: look_odds error for Cincinnati Gaynor Cup - ženy - To Win Match: No player names found for To Win Match
 [2026-02-18 11:25:39] ERROR: look_odds error for Cincinnati Gaynor Cup - ženy - To Win Match: No module named 'requests'
 [2026-02-18 11:26:01] ERROR: look_odds error for Cincinnati Gaynor Cup - ženy - To Win Match: No module named 'requests'
+[2026-03-03 21:39:05] ERROR: Login button detected — session expired, re-logging in
