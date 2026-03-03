@@ -159,15 +159,15 @@ def check_matches(old_matches: List[List[str]], event: Any) -> int:
 
     # N-leg combi picks
     all_triggered_combis: List[Dict[str, Any]] = []
-    if newly_identified and combi_rules_N:
+    if combi_rules_N:
         for combi_rule in combi_rules_N:
             if combi_rule.sent == 1:
                 continue
             num_legs = len(combi_rule.legs)
-            if num_legs == 0 or len(newly_identified) < num_legs:
+            if num_legs == 0 or len(event.matches) < num_legs:
                 continue
 
-            for selected in combinations(newly_identified, num_legs):
+            for selected in combinations(event.matches, num_legs):
                 for perm in permutations(selected, num_legs):
                     legs_details = []
                     product = 1.0
