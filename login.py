@@ -103,20 +103,27 @@ async def login(page):
     await asyncio.sleep(3)
     login_frame = page.frame(name="messageWindow")
     if login_frame:
-        print("Found messageWindow iframe, filling verification form...")
+        print("Found messageWindow iframe, checking for email verification form...")
 
-        # Debug: print all options for each select
-        for aria in ["Deň", "Mesiac", "Rok"]:
-            opts = await login_frame.evaluate(f"""
-                () => {{
-                    const s = document.querySelector('select[aria-label="{aria}"]');
-                    return s ? Array.from(s.options).map(o => o.value + ' | ' + o.text.trim()) : [];
-                }}
-            """)
-            print(f"  {aria} options: {opts}")
+        # Wait up to 6s for the email field — bet365 doesn't always require it
+        email_field = None
+        try:
+            await login_frame.wait_for_selector("#email", timeout=6000)
+            email_field = await login_frame.query_selector("#email")
+        except Exception:
+            pass
 
-        email_field = await login_frame.query_selector("#email")
         if email_field:
+            # Debug: print all options for each select
+            for aria in ["Deň", "Mesiac", "Rok"]:
+                opts = await login_frame.evaluate(f"""
+                    () => {{
+                        const s = document.querySelector('select[aria-label="{aria}"]');
+                        return s ? Array.from(s.options).map(o => o.value + ' | ' + o.text.trim()) : [];
+                    }}
+                """)
+                print(f"  {aria} options: {opts}")
+
             await email_field.fill(EMAIL)
             await asyncio.sleep(1)
             await login_frame.select_option('select[aria-label="Deň"]', value=DOB_DAY)
@@ -129,8 +136,7 @@ async def login(page):
             await asyncio.sleep(3)
             print("Verification form submitted — LOGIN SUCCESSFUL")
         else:
-            print("Email field not found in iframe")
-            return False
+            print("No email field in messageWindow — verification not required, assuming login succeeded")
     else:
         print("No messageWindow iframe found — skipping verification step")
 
