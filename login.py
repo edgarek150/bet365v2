@@ -100,7 +100,7 @@ async def login(page):
         return False
 
     # Step 5: Handle email/DOB verification iframe (messageWindow)
-    await asyncio.sleep(3)
+    await asyncio.sleep(6)
     login_frame = page.frame(name="messageWindow")
     if login_frame:
         print("Found messageWindow iframe, checking for email verification form...")
