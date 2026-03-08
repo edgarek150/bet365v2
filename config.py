@@ -73,6 +73,7 @@ SPORT_URLS = {
     'sk': 'https://www.bet365.com/#/AS/B107/',
 }
 
+# IGNORE_TOURN = ["New Zealand Open - ženy", "New Zealand Open", "Canadian Open"]
 IGNORE_TOURN = []
 IGNORE_HANDICAPS = 0
 

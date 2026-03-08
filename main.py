@@ -261,7 +261,7 @@ async def scrape():
                     await asyncio.sleep(10)
 
         print("Login done — starting scraper")
-        _ping_admin("🤖 bet365 scraper started")
+        # _ping_admin("🤖 bet365 scraper started")
 
         # Load persisted data and initialise known URLs
         data = load_json_from_file(config.DATA_JSON) or []

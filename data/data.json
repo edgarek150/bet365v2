@@ -111,5 +111,185 @@
         "url": "https://www.bet365.com/#/AC/B107/C21123319/D1/E130200645/F2/"
       }
     ]
+  },
+  {
+    "name": "Canadian Open",
+    "events": [
+      {
+        "name": "To Win Match",
+        "matches": [
+          [
+            "Yahya Elnawasany",
+            "Victor Crouin",
+            "3.40",
+            "1.30"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126164/D1/E130683613/F2/"
+      },
+      {
+        "name": "Handicaps",
+        "matches": [
+          [
+            "Yahya Elnawasany+1.5",
+            "Victor Crouin-1.5",
+            "2.00",
+            "1.72"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126164/D1/E130692909/F2/"
+      }
+    ]
+  },
+  {
+    "name": "New Zealand Open",
+    "events": [
+      {
+        "name": "To Win Match",
+        "matches": [
+          [
+            "Paul Coll",
+            "Mohamad Zakaria",
+            "1.20",
+            "4.33"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126166/D1/E130683983/F2/"
+      },
+      {
+        "name": "Handicaps",
+        "matches": [
+          [
+            "Paul Coll-2.5",
+            "Mohamad Zakaria+2.5",
+            "2.37",
+            "1.53"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126166/D1/E130701864/F2/"
+      }
+    ]
+  },
+  {
+    "name": "New Zealand Open - ženy",
+    "events": [
+      {
+        "name": "To Win Match",
+        "matches": [
+          [
+            "Tinne Gilis",
+            "Nele Gilis",
+            "1.57",
+            "2.25"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126168/D1/E130684078/F2/"
+      },
+      {
+        "name": "Handicaps",
+        "matches": [
+          [
+            "Tinne Gilis-1.5",
+            "Nele Gilis+1.5",
+            "2.20",
+            "1.61"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126168/D1/E130699715/F2/"
+      }
+    ]
+  },
+  {
+    "name": "Richardson Wealth Open Ž",
+    "events": [
+      {
+        "name": "To Win Match",
+        "matches": [
+          [
+            "Nardine Garas",
+            "Georgia Adderley",
+            "3.00",
+            "1.36"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126768/D1/E130774402/F2/"
+      }
+    ]
+  },
+  {
+    "name": "Richardson Wealth Open - ženy",
+    "events": [
+      {
+        "name": "To Win Match",
+        "matches": [
+          [
+            "Nardine Garas",
+            "Georgia Adderley",
+            "3.00",
+            "1.36"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126768/D1/E130774402/F2/"
+      },
+      {
+        "name": "Handicaps",
+        "matches": [
+          [
+            "Nardine Garas-2.5",
+            "Menna Walid+2.5",
+            "2.20",
+            "1.61"
+          ],
+          [
+            "Kiera Marshall+2.5",
+            "Georgia Adderley-2.5",
+            "2.50",
+            "1.50"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21127193/D1/E130858088/F2/"
+      }
+    ]
+  },
+  {
+    "name": "New Zealand Open Women",
+    "events": [
+      {
+        "name": "To Win Match",
+        "matches": [
+          [
+            "Nele Gilis",
+            "Torrie Malik",
+            "1.11",
+            "6.00"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126168/D1/E130684078/F2/"
+      },
+      {
+        "name": "Total Match Points",
+        "matches": [
+          [
+            "Nele Gilis",
+            "Torrie Malik",
+            "1.83",
+            "1.83"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126168/D1/E130699714/F2/"
+      },
+      {
+        "name": "Handicap Betting - Games",
+        "matches": [
+          [
+            "Nele Gilis",
+            "Torrie Malik",
+            "1.83",
+            "1.83"
+          ]
+        ],
+        "url": "https://www.bet365.com/#/AC/B107/C21126168/D1/E130699715/F2/"
+      }
+    ]
   }
 ]
