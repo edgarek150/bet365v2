@@ -6,7 +6,7 @@ from playwright.async_api import async_playwright
 from login import login
 from models import app_state, Link
 from scraper import get_tourn_a_event, look_odds, accept_cookies, create_new_pairs
-from processing.event_processor import initialize_urls
+from processing.event_processor import initialize_urls, prune_data_to_active_pairs
 from utils.io import load_json_from_file
 import config
 import requests
@@ -193,6 +193,8 @@ async def Main_Proccess(context, page, data):
         pairs = create_new_pairs(tourn_texts, event_texts)
         print(f"New pairs: {pairs}")
 
+        prune_data_to_active_pairs(data, set(pairs))
+
         known = createPairsFromLinks(app_state.URLS)
         new_pairs = sorted(Compare_pairs(known, pairs), key=lambda x: x[1])
         sorted_new = sorted(new_pairs, key=lambda x: (x[1] != "To Win Match", x))
@@ -227,6 +229,7 @@ async def Searching_Squash(context, page, data):
         tourn_texts, _ = await get_tourn_a_event(page)
         if tourn_texts:
             print(f"Found {len(tourn_texts)} tournaments, starting main process")
+            app_state.URLS.clear()
             await Main_Proccess(context, page, data)
             return
         else:

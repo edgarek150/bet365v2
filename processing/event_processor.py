@@ -18,6 +18,20 @@ def get_data_filepath():
     return config.DATA_JSON
 
 
+def prune_data_to_active_pairs(data: List[Dict[str, Any]], active_pairs: set) -> None:
+    """Remove from data any tournament/event not in active_pairs, then save to disk."""
+    if not active_pairs:
+        return
+    to_remove = []
+    for tourn in data:
+        tourn['events'] = [e for e in tourn.get('events', []) if (tourn['name'], e['name']) in active_pairs]
+        if not tourn['events']:
+            to_remove.append(tourn)
+    for t in to_remove:
+        data.remove(t)
+    save_json_to_file(data, get_data_filepath())
+
+
 def odds_existence(event: TournamentEvent, data: List[Dict[str, Any]]) -> int:
     """
     Checks if a tournament/event already exists in data, updates it or creates it,
