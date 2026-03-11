@@ -96,6 +96,7 @@ class AppState:
     TIMER: Any = None
     last_seen: Optional[datetime.datetime] = None
     SPEED_MODE: str = "medium"
+    IGNORE_TOURN: list = field(default_factory=list)
 
 
 app_state = AppState()

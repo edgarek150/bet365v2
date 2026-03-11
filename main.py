@@ -128,7 +128,7 @@ async def LoopNewUrl(context, page, in_pair, data):
         # Open event URL in a fresh tab, close the sport tab
         page = await open_new_tab(context, page, url)
 
-        if in_pair[0] not in config.IGNORE_TOURN and not (
+        if in_pair[0] not in app_state.IGNORE_TOURN and not (
             in_pair[1] == "Handicaps" and config.IGNORE_HANDICAPS == 1
         ):
             await look_odds(page, data, new_link)
@@ -157,7 +157,7 @@ async def Loop_URL(context, page, current_link: Link, data):
     if current_link.event == "Handicaps" and app_state.LOOPS_COUNTER % 5 != 0:
         return page
 
-    if current_link.tournament in config.IGNORE_TOURN:
+    if current_link.tournament in app_state.IGNORE_TOURN:
         return page
 
     # Open event URL in a fresh tab, close the current (sport) tab
@@ -213,7 +213,7 @@ async def Main_Proccess(context, page, data):
         for link in list(app_state.URLS):
             if config.IGNORE_HANDICAPS == 1 and link.event == "Handicaps":
                 continue
-            if link.tournament in config.IGNORE_TOURN:
+            if link.tournament in app_state.IGNORE_TOURN:
                 continue
             page = await Loop_URL(context, page, link, data)
 

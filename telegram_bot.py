@@ -43,12 +43,35 @@ async def telegram_command_listener():
                 offset = update["update_id"] + 1
                 msg = update.get("message", {})
                 chat_id = str(msg.get("chat", {}).get("id", ""))
-                text = msg.get("text", "").strip().lower()
+                raw_text = msg.get("text", "").strip()
+                text = raw_text.lower()
 
                 if chat_id != config.ADMIN_CHAT_ID:
                     continue
 
-                if text in ("/fast", "/medium", "/slow"):
+                if raw_text.lower().startswith("/ignore "):
+                    tourn = raw_text[8:].strip()
+                    if tourn and tourn not in app_state.IGNORE_TOURN:
+                        app_state.IGNORE_TOURN.append(tourn)
+                        _send(chat_id, f"Ignoring: {tourn}")
+                    else:
+                        _send(chat_id, f"Already ignored: {tourn}" if tourn else "Usage: /ignore <tournament name>")
+
+                elif raw_text.lower().startswith("/unignore "):
+                    tourn = raw_text[10:].strip()
+                    if tourn in app_state.IGNORE_TOURN:
+                        app_state.IGNORE_TOURN.remove(tourn)
+                        _send(chat_id, f"Removed from ignore: {tourn}")
+                    else:
+                        _send(chat_id, f"Not in ignore list: {tourn}")
+
+                elif text == "/ignorelist":
+                    if app_state.IGNORE_TOURN:
+                        _send(chat_id, "Ignored tournaments:\n" + "\n".join(app_state.IGNORE_TOURN))
+                    else:
+                        _send(chat_id, "No tournaments ignored.")
+
+                elif text in ("/fast", "/medium", "/slow"):
                     mode = text[1:]
                     settings = SPEED_MODES[mode]
                     app_state.SEARCH_SLEEP = list(settings["SEARCH_SLEEP"])
