@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
 
@@ -93,6 +94,8 @@ class AppState:
     CURRENT_LANGUAGE: str = 'sk'
     PROCESSED_LIVE_MATCHES: set = field(default_factory=set)
     TIMER: Any = None
+    last_seen: Optional[datetime.datetime] = None
+    SPEED_MODE: str = "medium"
 
 
 app_state = AppState()

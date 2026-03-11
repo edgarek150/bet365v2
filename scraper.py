@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import re
 from typing import List, Tuple, Any, Dict, Optional
 
@@ -330,6 +331,7 @@ async def look_odds(page, data: List[Dict[str, Any]], link: Link) -> None:
             matches=matches,
             url=link.url,
         )
+        app_state.last_seen = datetime.datetime.now()
         odds_existence(event_obj, data)
 
     except Exception as e:

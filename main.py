@@ -7,6 +7,8 @@ from login import login
 from models import app_state, Link
 from scraper import get_tourn_a_event, look_odds, accept_cookies, create_new_pairs
 from processing.event_processor import initialize_urls, prune_data_to_active_pairs
+from monitoring import start_monitoring
+from telegram_bot import telegram_command_listener
 from utils.io import load_json_from_file
 import config
 import requests
@@ -239,6 +241,8 @@ async def Searching_Squash(context, page, data):
 
 
 async def scrape():
+    asyncio.create_task(start_monitoring())
+    asyncio.create_task(telegram_command_listener())
     async with async_playwright() as p:
         browser = await p.chromium.connect_over_cdp("http://localhost:9222")
         context = browser.contexts[0] if browser.contexts else await browser.new_context()
