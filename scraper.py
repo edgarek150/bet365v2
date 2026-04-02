@@ -233,6 +233,10 @@ async def look_odds(page, data: List[Dict[str, Any]], link: Link) -> None:
         await page.goto(link.url, wait_until="domcontentloaded")
         await asyncio.sleep(3)
 
+        # Reset live tracking for this page visit — stale entries from previous
+        # cycles would cause create_matches to silently drop scheduled matches.
+        app_state.PROCESSED_LIVE_MATCHES.clear()
+
         # --- Detect live matches ---
         containers = await page.query_selector_all(".rcl-ParticipantFixtureDetails_LhsContainerInner")
         print(f"📊 Found {len(containers)} match containers")
