@@ -124,6 +124,7 @@ def create_matches(
         player2 = players[p2_idx].strip()
 
         if player1 in live_set or player2 in live_set:
+            print(f"    ⏭️  Skipping {player1} vs {player2} — detected as live")
             continue
 
         odd1_idx = i
@@ -132,11 +133,13 @@ def create_matches(
             log_error(f"Odds index out of bounds for match {player1} vs {player2}")
             continue
         if odds[odd1_idx] is None or odds[odd2_idx] is None:
+            print(f"    ⏭️  Skipping {player1} vs {player2} — None odd at [{odd1_idx}] or [{odd2_idx}]")
             continue
 
         odd1 = odds[odd1_idx].strip()
         odd2 = odds[odd2_idx].strip()
         if not odd1 or not odd2:
+            print(f"    ⏭️  Skipping {player1} vs {player2} — empty odd after strip: [{repr(odds[odd1_idx])}] / [{repr(odds[odd2_idx])}]")
             continue
 
         match_time = times[i].strip() if i < len(times) and times[i] is not None else ""
@@ -323,6 +326,9 @@ async def look_odds(page, data: List[Dict[str, Any]], link: Link) -> None:
         # --- Build Match objects ---
         live_snapshot = list(app_state.PROCESSED_LIVE_MATCHES)
         print(f"🎯 Creating matches: {len(players_for_creation)} players, {len(odds_for_creation)} odds, {len(all_times)} times")
+        print(f"   Players: {players_for_creation}")
+        print(f"   Odds: {odds_for_creation}")
+        print(f"   Live filter: {[set(s) for s in live_snapshot]}")
 
         matches = create_matches(len(players_for_creation), players_for_creation, odds_for_creation, all_times, live_snapshot)
         print(f"✅ {len(matches)} matches created for {link.tournament} - {link.event}")
